@@ -46,7 +46,10 @@ void UActionComponent::StartAction(TSubclassOf<USJAction> Action)
 			//Check if new action's tag is blocked by current action
 			if (!CurrentAction->BlockedTags.HasTag(DefaultNewAction->GrantsTag))
 			{
+				//Replace current action
+				PreviousAction = CurrentAction->GetClass();
 				StopAction();
+				
 				CurrentAction = NewObject<USJAction>(this, Action);
 				CurrentAction->OwnerActionComponent = this;
 				CurrentAction->IsActive = true;
@@ -56,6 +59,8 @@ void UActionComponent::StartAction(TSubclassOf<USJAction> Action)
 		}
 		else
 		{
+			PreviousAction = nullptr;
+			
 			CurrentAction = NewObject<USJAction>(this, Action);
 			CurrentAction->OwnerActionComponent = this;
 			CurrentAction->IsActive = true;

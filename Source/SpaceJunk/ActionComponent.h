@@ -24,6 +24,9 @@ public:
 	UPROPERTY()
 	USJAction* CurrentAction;
 	
+	UPROPERTY()
+	TSubclassOf<USJAction> PreviousAction;
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -48,5 +51,11 @@ public:
 	USJAction* GetCurrentAction()
 	{
 		return CurrentAction;
+	}
+
+	UFUNCTION(BlueprintCallable)
+	TSubclassOf<USJAction> GetPreviousAction()
+	{
+		return PreviousAction;
 	}
 };
