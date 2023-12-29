@@ -37,10 +37,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StartAction(TSubclassOf<USJAction> Action);
-
+    
 	UFUNCTION(BlueprintCallable)
 	void StopAction();
 
+	UFUNCTION(BlueprintCallable)
+	void ReturnToPreviousAction();
+	
 	UFUNCTION(BlueprintCallable)
 	FGameplayTagContainer GetCurrentTags()
 	{
@@ -58,4 +61,8 @@ public:
 	{
 		return PreviousAction;
 	}
+
+private:
+
+	void StopCurrentAction(bool bIsBeingReplaced);
 };

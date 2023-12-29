@@ -48,7 +48,7 @@ void UActionComponent::StartAction(TSubclassOf<USJAction> Action)
 			{
 				//Replace current action
 				PreviousAction = CurrentAction->GetClass();
-				StopAction();
+				StopCurrentAction(true);
 				
 				CurrentAction = NewObject<USJAction>(this, Action);
 				CurrentAction->OwnerActionComponent = this;
@@ -73,9 +73,26 @@ void UActionComponent::StartAction(TSubclassOf<USJAction> Action)
 
 void UActionComponent::StopAction()
 {
+	StopCurrentAction(false);
+}
+
+void UActionComponent::ReturnToPreviousAction()
+{
+	if(IsValid(PreviousAction))
+	{
+		StartAction(PreviousAction);
+	}
+	else
+	{
+		StopCurrentAction(false);
+	}
+}
+
+void UActionComponent::StopCurrentAction(bool bIsBeingReplaced)
+{
 	if (IsValid(CurrentAction))
 	{
-		CurrentAction->StopAction(GetOwner());
+		CurrentAction->StopAction(GetOwner(), bIsBeingReplaced);
 		CurrentAction->IsActive = false;
 		CurrentTags.RemoveTag(CurrentAction->GrantsTag);
 

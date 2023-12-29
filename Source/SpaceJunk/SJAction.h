@@ -43,7 +43,7 @@ public:
 	void StartAction(AActor* Instigator);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	void StopAction(AActor* Instigator);
+	void StopAction(AActor* Instigator, bool bIsBeingReplaced);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void TickAction(AActor* Instigator, float DeltaSeconds);
