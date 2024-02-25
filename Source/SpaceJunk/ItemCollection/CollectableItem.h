@@ -73,6 +73,7 @@ struct FCollectedItemStack
 	
 	FName RemoveFromStack()
 	{
+		Quantity--;
 		if (ActorKeys.IsEmpty()){ return FName();}
 		
 		return ActorKeys.Pop();

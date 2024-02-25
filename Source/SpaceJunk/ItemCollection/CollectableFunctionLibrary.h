@@ -34,4 +34,16 @@ public:
 	{
 		return ItemStack.ItemType == ItemType;
 	}
+
+	UFUNCTION(BlueprintPure)
+	static bool IsFull(UPARAM(ref) const FCollectedItemStack& ItemStack)
+	{
+		return ItemStack.Quantity < ItemStack.ItemType->MaxStack;
+	}
+
+	UFUNCTION(BlueprintPure)
+	static bool IsEmpty(UPARAM(ref) const FCollectedItemStack& ItemStack)
+	{
+		return ItemStack.Quantity <= 0;
+	}
 };
