@@ -55,5 +55,11 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	int32 GetTotalScrapValue() const;
+
+	UFUNCTION(BlueprintPure)
+	void GetPlayerInventorySnapshot(TArray<FCollectedItemStack>& PlayerInventory) const;
+
+	UFUNCTION(BlueprintPure)
+	void GetShipInventory(TArray<FCollectedItemStack>& OutShipInventory) const;
 };
 

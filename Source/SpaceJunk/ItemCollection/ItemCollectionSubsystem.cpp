@@ -38,7 +38,14 @@ bool UItemCollectionSubsystem::IsCollected(const FName Key) const
 void UItemCollectionSubsystem::AddToShipInventory(FCollectedItemStack& ItemStack)
 {
 	ShipInventory.Add(ItemStack);
-	TotalScrap += ItemStack.ItemType->Value * ItemStack.Quantity;
+	const int32 NewValue = ItemStack.ItemType->Value * ItemStack.Quantity;
+	TotalScrap += NewValue;
+	TotalScrapSnapshot += NewValue;
+	
+	for (FName ActorKey : ItemStack.ActorKeys)
+	{
+		CollectedItemsSnapshot.Add(ActorKey, true);
+	}
 	
 }
 
@@ -46,6 +53,7 @@ void UItemCollectionSubsystem::AddToShipInventory(FCollectedItemStack& ItemStack
 void UItemCollectionSubsystem::ResetToSnapshot()
 {
 	CollectedItems = CollectedItemsSnapshot;
+	TotalScrap = TotalScrapSnapshot;
 }
 
 void UItemCollectionSubsystem::ClearCollectedItems()
@@ -53,6 +61,8 @@ void UItemCollectionSubsystem::ClearCollectedItems()
     CollectedItems.Empty();
 	CollectedItemsSnapshot.Empty();
 	PlayerInventorySnapshot.Empty();
+	TotalScrapSnapshot = 0;
+	TotalScrap = 0;
 }
 
 void UItemCollectionSubsystem::AddScrapValue(int32 Amount)
@@ -64,5 +74,16 @@ int32 UItemCollectionSubsystem::GetTotalScrapValue() const
 {
 	return TotalScrap;
 }
+
+void UItemCollectionSubsystem::GetPlayerInventorySnapshot(TArray<FCollectedItemStack>& PlayerInventory) const
+{
+	PlayerInventory = PlayerInventorySnapshot;
+}
+
+void UItemCollectionSubsystem::GetShipInventory(TArray<FCollectedItemStack>& OutShipInventory) const
+{
+	OutShipInventory = ShipInventory;
+}
+
 
 
