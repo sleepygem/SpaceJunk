@@ -76,6 +76,14 @@ void UActionComponent::StopAction()
 	StopCurrentAction(false);
 }
 
+void UActionComponent::TriggerActionEvent(FGameplayTag EventTag)
+{
+	if (IsValid(CurrentAction))
+	{
+		CurrentAction->ActionEvent(EventTag);
+	}
+}
+
 void UActionComponent::ReturnToPreviousAction()
 {
 	if(IsValid(PreviousAction))

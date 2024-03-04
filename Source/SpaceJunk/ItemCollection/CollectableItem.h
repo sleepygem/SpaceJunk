@@ -32,6 +32,9 @@ public:
 	int32 MaxStack;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	bool bCanBeStoredInInventory = true;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	FText InteractPrompt;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
@@ -48,7 +51,7 @@ struct FCollectedItemStack
 	
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	UCollectableItem* ItemType;
-
+    
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 Quantity;
 

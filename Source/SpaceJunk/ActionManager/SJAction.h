@@ -46,6 +46,9 @@ public:
 	void StopAction(AActor* Instigator, bool bIsBeingReplaced);
 
 	UFUNCTION(BlueprintImplementableEvent)
+	void ActionEvent(FGameplayTag EventTag);
+	
+	UFUNCTION(BlueprintImplementableEvent)
 	void TickAction(AActor* Instigator, float DeltaSeconds);
 	
 	virtual class UWorld* GetWorld() const override;

@@ -42,6 +42,9 @@ public:
 	void StopAction();
 
 	UFUNCTION(BlueprintCallable)
+	void TriggerActionEvent(FGameplayTag EventTag);
+	
+	UFUNCTION(BlueprintCallable)
 	void ReturnToPreviousAction();
 	
 	UFUNCTION(BlueprintCallable)
