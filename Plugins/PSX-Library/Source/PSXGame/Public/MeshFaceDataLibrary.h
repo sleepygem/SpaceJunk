@@ -10,6 +10,7 @@
 /**
  * 
  */
+
 UCLASS()
 class PSXGAME_API UMeshFaceDataLibrary : public UBlueprintFunctionLibrary
 {
@@ -17,13 +18,13 @@ class PSXGAME_API UMeshFaceDataLibrary : public UBlueprintFunctionLibrary
 
 public:
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="MeshData")
 	static void GetVerticesOfFaceIndex(UStaticMeshComponent* MeshComponent, const int FaceIndex, TArray<FVector>& OutVertices, TArray<FLinearColor>& OutColours);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Calculation")
 	static FVector GetBaryCentryic(FVector Point, FVector A, FVector B, FVector C);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category="Calculation")
 	static FLinearColor InterpolateVertexColors(FVector BarycentricCoords, TArray<FLinearColor> Colors);
 	
 };

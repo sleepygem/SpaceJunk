@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "StaticMeshResources.h"
 #include "MeshFaceDataLibrary.h"
 
 void UMeshFaceDataLibrary::GetVerticesOfFaceIndex(UStaticMeshComponent* MeshComponent, const int FaceIndex, TArray<FVector>& OutVertices, TArray<FLinearColor>& OutColours)
