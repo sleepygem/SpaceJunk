@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "CommonCPPFunctions.generated.h"
 
 /**
@@ -17,4 +18,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static void SetAnimRootMotionTranslationScale(ACharacter* Character, float TranslationScale);
+
+	UFUNCTION(BlueprintCallable)
+	static void RLerpBasedOnGroundAngle(USceneComponent* Component, float AngleLimit, float Speed, float DeltaSeconds, EDrawDebugTrace::Type DrawDebug);
 };
