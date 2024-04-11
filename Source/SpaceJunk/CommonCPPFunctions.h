@@ -20,5 +20,9 @@ public:
 	static void SetAnimRootMotionTranslationScale(ACharacter* Character, float TranslationScale);
 
 	UFUNCTION(BlueprintCallable)
-	static void RLerpBasedOnGroundAngle(USceneComponent* Component, float AngleLimit, float Speed, float DeltaSeconds, EDrawDebugTrace::Type DrawDebug);
+	static void RLerpBasedOnGroundAngle(USceneComponent* Component, float AngleLimit, float Speed, float DeltaSeconds, float TraceHeight, EDrawDebugTrace::Type DrawDebug);
+
+	UFUNCTION(BlueprintCallable)
+	static AActor* GetNearestValidInteractable(AActor* OwnerActor, TArray<AActor*> InActorList, bool& bIsValid);
+	
 };

@@ -12,12 +12,14 @@ void UCommonCPPFunctions::SetAnimRootMotionTranslationScale(ACharacter* Characte
 	Character->SetAnimRootMotionTranslationScale(TranslationScale);
 }
 
-void UCommonCPPFunctions::RLerpBasedOnGroundAngle(USceneComponent* Component, float AngleLimit, float Speed, float DeltaSeconds, EDrawDebugTrace::Type DrawDebug)
+void UCommonCPPFunctions::RLerpBasedOnGroundAngle(USceneComponent* Component, float AngleLimit, float Speed, float DeltaSeconds, float TraceHeight = 100.0f, EDrawDebugTrace::Type DrawDebug = EDrawDebugTrace::None)
 {
-	const FVector TraceStart = Component->GetComponentLocation();
-	const FVector TraceEnd = TraceStart + FVector::UpVector * -400.0f ;
-
 	AActor* ComponentActor = Component->GetOwner();
+	
+	const FVector TraceStart = ComponentActor->GetActorLocation();
+	const FVector TraceEnd = TraceStart + FVector::UpVector * (-TraceHeight) ;
+
+	
 
 	const TArray<AActor*> IgnoreArray({ComponentActor});
 
@@ -27,13 +29,54 @@ void UCommonCPPFunctions::RLerpBasedOnGroundAngle(USceneComponent* Component, fl
 		TraceStart, TraceEnd, ETraceTypeQuery::TraceTypeQuery1, false,
 		IgnoreArray, DrawDebug, HitResult, true))
 	{
-		FRotator NormalRotation = UKismetMathLibrary::MakeRotFromYZ(Component->GetForwardVector(), HitResult.ImpactNormal);
-		NormalRotation.SetComponentForAxis(EAxis::Y, FMath::Clamp(NormalRotation.Pitch, 0.f, AngleLimit));
-		const FRotator CurrentRotation = FRotator(0.f, -270.0f, 0.f) + Component->GetComponentRotation();
-		const FQuat LerpedRotator = FQuat::Slerp(CurrentRotation.Quaternion(),NormalRotation.Quaternion(), Speed * DeltaSeconds);
-
-		const FRotator ResultRotation = FRotator(LerpedRotator) + FRotator(0.f, 270.0f, 0.f);
+		const FVector NormalCrossProduct = HitResult.ImpactNormal.Cross(ComponentActor->GetActorRightVector());
+		FRotator NormalRotation = UKismetMathLibrary::MakeRotFromYZ(NormalCrossProduct * -1.0f, HitResult.ImpactNormal);
+		//NormalRotation.SetComponentForAxis(EAxis::Y, FMath::Clamp(NormalRotation.Pitch, 0.f, AngleLimit));
+		//const FRotator CurrentRotation = UKismetMathLibrary::ComposeRotators(FRotator(0.f, -270.0f, 0.f), Component->GetComponentRotation());
+		const FQuat LerpedRotator = FQuat::Slerp(Component->GetComponentRotation().Quaternion(),NormalRotation.Quaternion(), Speed * DeltaSeconds);
+		
+		//const FQuat ResultRotation = LerpedRotator * FRotator(0.f, 270.0f, 0.f).Quaternion();
 		
 		Component->SetWorldRotation(LerpedRotator);
 	}
+	else
+	{
+		
+		const FQuat LerpedRotator = FQuat::Slerp(Component->GetRelativeRotation().Quaternion(),FRotator(0.f, 270.0f, 0.f).Quaternion(), Speed * 2.0f * DeltaSeconds);
+		Component->SetRelativeRotation(LerpedRotator);
+	}
+}
+
+AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TArray<AActor*> InActorList, bool& bIsValid)
+{
+	InActorList.Sort([&](const AActor& ActorA, const AActor& ActorB)
+	{
+		const float DistanceA = FVector::Dist(OwnerActor->GetActorLocation(), ActorA.GetActorLocation());
+		const float DistanceB = FVector::Dist(OwnerActor->GetActorLocation(), ActorB.GetActorLocation());
+		return DistanceA < DistanceB;
+	});
+	
+	for (int i = 0; i < InActorList.Num(); i++)
+	{
+		AActor* Interactable = InActorList[i];
+		const TArray<AActor*> ActorsToIgnore({OwnerActor, Interactable});
+		FHitResult HitResult;
+		
+		if (!UKismetSystemLibrary::LineTraceSingle(OwnerActor,
+			Interactable->GetActorLocation(),
+			OwnerActor->GetActorLocation(),
+			TraceTypeQuery1,
+			false,
+			ActorsToIgnore,
+			EDrawDebugTrace::None,
+			HitResult,
+			true))
+		{
+			bIsValid = true;
+			return Interactable;
+		}
+	}
+	
+	bIsValid = false;
+	return nullptr;
 }
