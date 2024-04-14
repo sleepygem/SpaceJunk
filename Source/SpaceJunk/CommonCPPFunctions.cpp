@@ -49,6 +49,13 @@ void UCommonCPPFunctions::RLerpBasedOnGroundAngle(USceneComponent* Component, fl
 
 AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TArray<AActor*> InActorList, bool& bIsValid)
 {
+
+    if (InActorList.Num() == 0)
+    {
+    	bIsValid = false;
+	    return nullptr;
+    }
+    
 	InActorList.Sort([&](const AActor& ActorA, const AActor& ActorB)
 	{
 		const float DistanceA = FVector::Dist(OwnerActor->GetActorLocation(), ActorA.GetActorLocation());
@@ -59,21 +66,25 @@ AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TAr
 	for (int i = 0; i < InActorList.Num(); i++)
 	{
 		AActor* Interactable = InActorList[i];
-		const TArray<AActor*> ActorsToIgnore({OwnerActor, Interactable});
+		const TArray<AActor*> ActorsToIgnore({OwnerActor});
 		FHitResult HitResult;
 		
-		if (!UKismetSystemLibrary::LineTraceSingle(OwnerActor,
+		if (UKismetSystemLibrary::LineTraceSingle(OwnerActor,
 			Interactable->GetActorLocation(),
 			OwnerActor->GetActorLocation(),
 			TraceTypeQuery1,
 			false,
 			ActorsToIgnore,
-			EDrawDebugTrace::None,
+			EDrawDebugTrace::ForOneFrame,
 			HitResult,
 			true))
 		{
-			bIsValid = true;
-			return Interactable;
+			if (HitResult.GetActor() == Interactable)
+			{
+				bIsValid = true;
+				UE_LOG(LogTemp, Warning, TEXT("Interactable Hit: %s"), *Interactable->GetName())
+				return Interactable;
+			}
 		}
 	}
 	
