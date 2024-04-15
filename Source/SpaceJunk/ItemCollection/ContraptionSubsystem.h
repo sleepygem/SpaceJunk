@@ -10,6 +10,51 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnContraptionAddedSignature, AActor*, ContraptionActor);
+
+USTRUCT()
+struct FDeployedContraption
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY()
+	AActor* DeployedActor;
+
+	UPROPERTY()
+	UCollectableItem* ItemData;
+
+	UPROPERTY()
+	FTransform ActorTransform;
+
+	FDeployedContraption()
+	{
+		DeployedActor = nullptr;
+		ItemData = nullptr;
+	}
+	
+	FDeployedContraption(AActor* InActor, UCollectableItem* InItemData)
+	{
+		DeployedActor = InActor;
+		ItemData = InItemData;
+		ActorTransform = InActor->GetTransform();
+	}
+};
+
+USTRUCT()
+struct FCheckpointContraptions
+{
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY()
+	TArray<FDeployedContraption> Contraptions;
+	
+};
+
 UCLASS()
 class SPACEJUNK_API UContraptionSubsystem : public UGameInstanceSubsystem
 {
@@ -23,6 +68,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UCollectableItem*> DeployedContraptions;
 
+	UPROPERTY()
+	TMap<int32, FCheckpointContraptions> TrackedContraptions;
+	
+	UPROPERTY(BlueprintReadOnly)
+	int32 CurrentCheckpointId = 0;
+	
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -30,6 +81,18 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RetrieveDeployedActors(TArray<UCollectableItem*>& OutContraptions);
+
+	UFUNCTION(BlueprintCallable)
+	void RetrieveDeployedActorsForCheckpoint(int32 CheckpointId, TArray<UCollectableItem*>& OutContraptions);
+
+	UFUNCTION(BlueprintPure)
+	bool DoesCheckpointHaveContraptions(int32 CheckpointId);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetCurrentCheckpoint(int32 CheckpointId);
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnContraptionAddedSignature OnContraptionAddedDelegate;
 	
 };
 

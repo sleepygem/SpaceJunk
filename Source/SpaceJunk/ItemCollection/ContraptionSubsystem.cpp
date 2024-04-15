@@ -5,8 +5,22 @@
 
 void UContraptionSubsystem::TrackContraption(UCollectableItem* ItemData, AActor* Actor)
 {
-	DeployedActors.Add(Actor);
-	DeployedContraptions.Add(ItemData);
+	//DeployedActors.Add(Actor);
+	//DeployedContraptions.Add(ItemData);
+
+	const FDeployedContraption ContraptionInfo = FDeployedContraption(Actor, ItemData);
+	
+	if (FCheckpointContraptions* CheckpointContraptions = TrackedContraptions.Find(CurrentCheckpointId))
+	{
+		CheckpointContraptions->Contraptions.Add(ContraptionInfo);
+		return;
+	}
+
+	FCheckpointContraptions NewCheckpointContraptionList = FCheckpointContraptions();
+	NewCheckpointContraptionList.Contraptions.Add(ContraptionInfo);
+	TrackedContraptions.Add(CurrentCheckpointId, NewCheckpointContraptionList);
+	
+	OnContraptionAddedDelegate.Broadcast(Actor);
 }
 
 void UContraptionSubsystem::RetrieveDeployedActors(TArray<UCollectableItem*>& OutContraptions)
@@ -19,4 +33,32 @@ void UContraptionSubsystem::RetrieveDeployedActors(TArray<UCollectableItem*>& Ou
 
 	OutContraptions = DeployedContraptions;
 	DeployedContraptions.Empty();
+}
+
+void UContraptionSubsystem::RetrieveDeployedActorsForCheckpoint(int32 CheckpointId,
+	TArray<UCollectableItem*>& OutContraptions)
+{
+	if (FCheckpointContraptions* CheckpointContraptions = TrackedContraptions.Find(CurrentCheckpointId))
+	{
+		for (FDeployedContraption& Contraption : CheckpointContraptions->Contraptions)
+		{
+			Contraption.DeployedActor->Destroy();
+			OutContraptions.Add(Contraption.ItemData);
+		}
+		CheckpointContraptions->Contraptions.Empty();
+	}
+}
+
+bool UContraptionSubsystem::DoesCheckpointHaveContraptions(int32 CheckpointId)
+{
+	if (const FCheckpointContraptions* CheckpointContraptions = TrackedContraptions.Find(CheckpointId))
+	{
+		return !CheckpointContraptions->Contraptions.IsEmpty();
+	}
+	return false;
+}
+
+void UContraptionSubsystem::SetCurrentCheckpoint(int32 CheckpointId)
+{
+	CurrentCheckpointId = CheckpointId;
 }
