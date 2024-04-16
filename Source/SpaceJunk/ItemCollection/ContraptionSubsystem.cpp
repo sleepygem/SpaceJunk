@@ -3,6 +3,8 @@
 
 #include "ContraptionSubsystem.h"
 
+#include "K2Node_SpawnActorFromClass.h"
+
 void UContraptionSubsystem::TrackContraption(UCollectableItem* ItemData, AActor* Actor)
 {
 	//DeployedActors.Add(Actor);
@@ -42,7 +44,10 @@ void UContraptionSubsystem::RetrieveDeployedActorsForCheckpoint(int32 Checkpoint
 	{
 		for (FDeployedContraption& Contraption : CheckpointContraptions->Contraptions)
 		{
-			Contraption.DeployedActor->Destroy();
+			if (Contraption.DeployedActor != nullptr)
+			{
+				Contraption.DeployedActor->Destroy();
+			}
 			OutContraptions.Add(Contraption.ItemData);
 		}
 		CheckpointContraptions->Contraptions.Empty();
@@ -61,4 +66,22 @@ bool UContraptionSubsystem::DoesCheckpointHaveContraptions(int32 CheckpointId)
 void UContraptionSubsystem::SetCurrentCheckpoint(int32 CheckpointId)
 {
 	CurrentCheckpointId = CheckpointId;
+	SnapshotContraptions = TrackedContraptions;
+}
+
+void UContraptionSubsystem::RespawnAllContraptions(UWorld* WorldContext)
+{
+	TArray<FCheckpointContraptions> CheckpointList;
+	SnapshotContraptions.GenerateValueArray(CheckpointList);
+	
+	for (FCheckpointContraptions& Checkpoint : CheckpointList)
+	{
+		for (FDeployedContraption& Contraption : Checkpoint.Contraptions)
+		{
+			const UCollectableItem* ItemData = Contraption.ItemData;
+			Contraption.DeployedActor = WorldContext->SpawnActor(ItemData->ActorClass, &Contraption.ActorTransform);
+		}	
+	}
+
+	TrackedContraptions = SnapshotContraptions;
 }

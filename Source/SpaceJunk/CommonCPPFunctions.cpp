@@ -70,8 +70,8 @@ AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TAr
 		FHitResult HitResult;
 		
 		if (UKismetSystemLibrary::LineTraceSingle(OwnerActor,
-			Interactable->GetActorLocation(),
 			OwnerActor->GetActorLocation(),
+			Interactable->GetActorLocation(),
 			TraceTypeQuery1,
 			false,
 			ActorsToIgnore,

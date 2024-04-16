@@ -13,20 +13,20 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnContraptionAddedSignature, AActor*, ContraptionActor);
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FDeployedContraption
 {
 	GENERATED_BODY()
 
 public:
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	AActor* DeployedActor;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	UCollectableItem* ItemData;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	FTransform ActorTransform;
 
 	FDeployedContraption()
@@ -70,6 +70,9 @@ protected:
 
 	UPROPERTY()
 	TMap<int32, FCheckpointContraptions> TrackedContraptions;
+
+	UPROPERTY()
+	TMap<int32, FCheckpointContraptions> SnapshotContraptions;
 	
 	UPROPERTY(BlueprintReadOnly)
 	int32 CurrentCheckpointId = 0;
@@ -90,6 +93,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentCheckpoint(int32 CheckpointId);
+
+	UFUNCTION(BlueprintCallable, meta = (WorldContext="WorldContext"))
+	void RespawnAllContraptions(UWorld* WorldContext);
 	
 	UPROPERTY(BlueprintAssignable)
 	FOnContraptionAddedSignature OnContraptionAddedDelegate;
