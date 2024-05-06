@@ -22,7 +22,7 @@ public:
 	static void GetVerticesOfFaceIndex(UStaticMeshComponent* MeshComponent, const int FaceIndex, TArray<FVector>& OutVertices, TArray<FLinearColor>& OutColours);
 
 	UFUNCTION(BlueprintCallable, Category="Calculation")
-	static FVector GetBaryCentryic(FVector Point, FVector A, FVector B, FVector C);
+	static FVector GetBaryCentric(FVector Point, FVector A, FVector B, FVector C);
 
 	UFUNCTION(BlueprintCallable, Category="Calculation")
 	static FLinearColor InterpolateVertexColors(FVector BarycentricCoords, TArray<FLinearColor> Colors);

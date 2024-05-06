@@ -3,12 +3,15 @@
 
 #include "ItemCollectionSubsystem.h"
 
+#include "HairStrandsInterface.h"
 #include "Kismet/GameplayStatics.h"
 
-void UItemCollectionSubsystem::MakeCheckpointSnapshot(TArray<FCollectedItemStack> PlayerInventory)
+void UItemCollectionSubsystem::MakeCheckpointSnapshot(TArray<FCollectedItemStack> PlayerInventory,
+	TArray<FCollectedItemStack> ToolInventory)
 {
 	CollectedItemsSnapshot = CollectedItems;
 	PlayerInventorySnapshot = PlayerInventory;
+	PlayerToolsSnapshot = ToolInventory;
 	TotalScrapSnapshot = TotalScrap; 
 }
 
@@ -46,7 +49,6 @@ void UItemCollectionSubsystem::AddToShipInventory(FCollectedItemStack& ItemStack
 	{
 		CollectedItemsSnapshot.Add(ActorKey, true);
 	}
-	
 }
 
 
@@ -61,6 +63,7 @@ void UItemCollectionSubsystem::ClearCollectedItems()
     CollectedItems.Empty();
 	CollectedItemsSnapshot.Empty();
 	PlayerInventorySnapshot.Empty();
+	PlayerToolsSnapshot.Empty();
 	TotalScrapSnapshot = 0;
 	TotalScrap = 0;
 }
@@ -83,6 +86,11 @@ void UItemCollectionSubsystem::GetPlayerInventorySnapshot(TArray<FCollectedItemS
 void UItemCollectionSubsystem::GetShipInventory(TArray<FCollectedItemStack>& OutShipInventory) const
 {
 	OutShipInventory = ShipInventory;
+}
+
+void UItemCollectionSubsystem::GetPlayerTools(TArray<FCollectedItemStack>& PlayerTools) const
+{
+	PlayerTools = PlayerToolsSnapshot;
 }
 
 

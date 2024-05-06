@@ -57,7 +57,7 @@ void UMeshFaceDataLibrary::GetVerticesOfFaceIndex(UStaticMeshComponent* MeshComp
 	}
 }
 
-FVector UMeshFaceDataLibrary::GetBaryCentryic(FVector Point, FVector A, FVector B, FVector C)
+FVector UMeshFaceDataLibrary::GetBaryCentric(FVector Point, FVector A, FVector B, FVector C)
 {
 	return FMath::ComputeBaryCentric2D(Point, A, B, C);
 }

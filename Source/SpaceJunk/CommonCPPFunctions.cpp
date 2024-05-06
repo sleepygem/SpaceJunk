@@ -3,6 +3,7 @@
 
 #include "CommonCPPFunctions.h"
 
+#include "Engine/UserInterfaceSettings.h"
 #include "GameFramework/Character.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -90,4 +91,14 @@ AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TAr
 	
 	bIsValid = false;
 	return nullptr;
+}
+
+void UCommonCPPFunctions::SetUIScale(float NewScale)
+{
+	UUserInterfaceSettings* UISettings = GetMutableDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass());
+
+	if (UISettings)
+	{
+		UISettings->ApplicationScale = NewScale;
+	}
 }

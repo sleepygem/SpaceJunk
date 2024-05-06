@@ -21,7 +21,7 @@ protected:
 	TMap<FName, bool> CollectedItemsSnapshot;
 
 	TArray<FCollectedItemStack> PlayerInventorySnapshot;
-
+	TArray<FCollectedItemStack> PlayerToolsSnapshot;
 	TArray<FCollectedItemStack> ShipInventory;
 
 	int32 TotalScrap;
@@ -30,7 +30,7 @@ protected:
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void MakeCheckpointSnapshot(TArray<FCollectedItemStack> PlayerInventory);
+	void MakeCheckpointSnapshot(TArray<FCollectedItemStack> PlayerInventory, TArray<FCollectedItemStack> ToolInventory);
 
 	UFUNCTION(BlueprintCallable)
 	void SetKeyAsCollected(FName Key);
@@ -61,5 +61,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	void GetShipInventory(TArray<FCollectedItemStack>& OutShipInventory) const;
+
+	UFUNCTION(BlueprintPure)
+	void GetPlayerTools(TArray<FCollectedItemStack>& PlayerTools) const;
 };
 

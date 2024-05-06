@@ -24,5 +24,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	static AActor* GetNearestValidInteractable(AActor* OwnerActor, TArray<AActor*> InActorList, bool& bIsValid);
+
+	UFUNCTION(BlueprintCallable)
+	static void SetUIScale(float NewScale);
 	
 };
