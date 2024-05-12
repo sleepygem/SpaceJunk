@@ -93,5 +93,19 @@ void UItemCollectionSubsystem::GetPlayerTools(TArray<FCollectedItemStack>& Playe
 	PlayerTools = PlayerToolsSnapshot;
 }
 
+void UItemCollectionSubsystem::SetCutsceneViewedFlag(FName SceneName, bool bViewed)
+{
+	CutsceneViewedFlags.Add(SceneName, bViewed);
+}
+
+bool UItemCollectionSubsystem::HasCutsceneBeenViewed(const FName SceneName)
+{
+	if (bool* ViewFlag = CutsceneViewedFlags.Find(SceneName))
+	{
+		return true;
+	}
+	return false;
+}
+
 
 

@@ -24,6 +24,9 @@ protected:
 	UPROPERTY()
 	TArray<AActor*> TrackedActors;
 
+	UPROPERTY()
+	bool IsInteractionEnabled = true;
+	
 public:
 
 	UFUNCTION(BlueprintCallable)
@@ -37,4 +40,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void RemoveActor(AActor* Actor);
+
+	UFUNCTION(BlueprintCallable)
+	void SetInteractionEnabled(bool bEnabled);
+
+	UFUNCTION(BlueprintPure)
+	bool GetInteractionEnabled();
 };

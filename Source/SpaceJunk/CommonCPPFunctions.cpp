@@ -76,7 +76,7 @@ AActor* UCommonCPPFunctions::GetNearestValidInteractable(AActor* OwnerActor, TAr
 			TraceTypeQuery1,
 			false,
 			ActorsToIgnore,
-			EDrawDebugTrace::ForOneFrame,
+			EDrawDebugTrace::None,
 			HitResult,
 			true))
 		{

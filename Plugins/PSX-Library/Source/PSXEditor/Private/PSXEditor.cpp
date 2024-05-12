@@ -19,7 +19,10 @@ void FPSXEditorModule::StartupModule()
 
 	TSharedPtr<FVertexSpotLightVisualizer> SpotlightVisualizer = MakeShareable(new FVertexSpotLightVisualizer());
 
-	GUnrealEd->RegisterComponentVisualizer(UVertexSpotlightComponent::StaticClass()->GetFName(), SpotlightVisualizer);
+	if (SpotlightVisualizer.IsValid() && GUnrealEd)
+	{
+		GUnrealEd->RegisterComponentVisualizer(UVertexSpotlightComponent::StaticClass()->GetFName(), SpotlightVisualizer);
+	}
 }
 
 void FPSXEditorModule::ShutdownModule()

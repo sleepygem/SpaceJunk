@@ -26,6 +26,8 @@ protected:
 
 	int32 TotalScrap;
 	int32 TotalScrapSnapshot;
+
+	TMap<FName, bool> CutsceneViewedFlags;
 	
 public:
 
@@ -64,5 +66,12 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	void GetPlayerTools(TArray<FCollectedItemStack>& PlayerTools) const;
+
+	//Cutscene Flag Functions
+	UFUNCTION(BlueprintCallable)
+	void SetCutsceneViewedFlag(FName SceneName, bool bViewed);
+
+	UFUNCTION(BlueprintCallable)
+	bool HasCutsceneBeenViewed(const FName SceneName);
 };
 

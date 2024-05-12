@@ -71,3 +71,13 @@ void UPlayerInteractableTracker::RemoveActor(AActor* Actor)
 	}
 }
 
+void UPlayerInteractableTracker::SetInteractionEnabled(bool bEnabled)
+{
+	IsInteractionEnabled = bEnabled;
+}
+
+bool UPlayerInteractableTracker::GetInteractionEnabled()
+{
+	return IsInteractionEnabled;
+}
+

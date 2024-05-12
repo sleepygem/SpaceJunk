@@ -1,9 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "ContraptionSubsystem.h"
-
-#include "K2Node_SpawnActorFromClass.h"
 
 void UContraptionSubsystem::TrackContraption(UCollectableItem* ItemData, AActor* Actor)
 {
