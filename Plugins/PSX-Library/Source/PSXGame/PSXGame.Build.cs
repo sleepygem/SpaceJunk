@@ -19,6 +19,8 @@ public class PSXGame : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "Slate",
+                "RenderCore",
+                "RHI",
                 "SlateCore"
             }
         );
