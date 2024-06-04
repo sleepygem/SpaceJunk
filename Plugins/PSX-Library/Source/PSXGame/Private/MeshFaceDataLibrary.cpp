@@ -2,8 +2,6 @@
 
 #include "MeshFaceDataLibrary.h"
 
-#include "ComponentReregisterContext.h"
-#include "LandscapeRender.h"
 #include "StaticMeshComponentLODInfo.h"
 #include "StaticMeshResources.h"
 #include "Engine/StaticMesh.h"
