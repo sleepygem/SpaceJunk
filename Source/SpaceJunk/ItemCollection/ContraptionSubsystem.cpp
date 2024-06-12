@@ -51,6 +51,15 @@ void UContraptionSubsystem::RetrieveDeployedActorsForCheckpoint(int32 Checkpoint
 	}
 }
 
+void UContraptionSubsystem::ResetTrackedData()
+{
+	TrackedContraptions.Empty();
+	SnapshotContraptions.Empty();
+	CurrentCheckpointId = 0;
+	DeployedActors.Empty();
+	DeployedContraptions.Empty();
+}
+
 bool UContraptionSubsystem::DoesCheckpointHaveContraptions(int32 CheckpointId)
 {
 	if (const FCheckpointContraptions* CheckpointContraptions = TrackedContraptions.Find(CheckpointId))

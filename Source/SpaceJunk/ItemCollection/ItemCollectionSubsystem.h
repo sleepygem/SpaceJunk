@@ -16,17 +16,23 @@ class SPACEJUNK_API UItemCollectionSubsystem : public UGameInstanceSubsystem
 	GENERATED_BODY()
 
 protected:
-	
+
+	UPROPERTY()
 	TMap<FName, bool> CollectedItems;
+	UPROPERTY()
 	TMap<FName, bool> CollectedItemsSnapshot;
 
+	UPROPERTY()
 	TArray<FCollectedItemStack> PlayerInventorySnapshot;
+	UPROPERTY()
 	TArray<FCollectedItemStack> PlayerToolsSnapshot;
+	UPROPERTY()
 	TArray<FCollectedItemStack> ShipInventory;
 
 	int32 TotalScrap;
 	int32 TotalScrapSnapshot;
 
+	UPROPERTY()
 	TMap<FName, bool> CutsceneViewedFlags;
 	
 public:
@@ -73,5 +79,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool HasCutsceneBeenViewed(const FName SceneName);
+	
+	UFUNCTION(BlueprintCallable)
+	void ResetAllData();
 };
 

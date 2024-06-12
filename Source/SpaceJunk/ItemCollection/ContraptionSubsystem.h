@@ -94,6 +94,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurrentCheckpoint(int32 CheckpointId);
 
+	UFUNCTION(BlueprintCallable)
+	void ResetTrackedData();
+
 	UFUNCTION(BlueprintCallable, meta = (WorldContext="WorldContext"))
 	void RespawnAllContraptions(UWorld* WorldContext);
 	

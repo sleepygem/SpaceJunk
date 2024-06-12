@@ -24,6 +24,21 @@ void UItemCollectionSubsystem::SetKeyAsCollected(FName Key)
 	}
 }
 
+void UItemCollectionSubsystem::ResetAllData()
+{
+	CollectedItemsSnapshot.Empty();
+	PlayerInventorySnapshot.Empty();
+	PlayerToolsSnapshot.Empty();
+	TotalScrapSnapshot = 0;
+	TotalScrap = 0;
+
+	CollectedItems.Empty();
+
+	CutsceneViewedFlags.Empty();
+
+	ShipInventory.Empty();
+}
+
 void UItemCollectionSubsystem::RemoveKeyFromCollection(const FName Key)
 {
 	CollectedItems.Remove(Key);
